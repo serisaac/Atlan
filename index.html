@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlán — Monitoreo del Arroyo Jabalines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="wrap navbar-inner">
+    <span class="brand-mark"><img src="img/marca/logo-Atlan.png" alt="Atlán" class="logo-nav">Atlán</span>
+    <div class="nav-links">
+      <a href="#problematica">Problemática</a>
+      <a href="#proyecto">El proyecto</a>
+      <a href="#galeria">Galería</a>
+      <a href="#equipo">Equipo</a>
+      <a href="#noticias">Noticias</a>
+      <a href="#dashboard" class="nav-cta">Dashboard en vivo</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="inicio">
+    <div>
+      <img src="img/marca/logo-Atlan.png" alt="Atlán" class="logo-hero">
+      <span class="brand-sub">Arroyo Jabalines · Mazatlán</span>
+      <h1>El pulso del arroyo,<br><em>leído cada minuto.</em></h1>
+      <p>Sensores instalados en el Arroyo Jabalines miden temperatura, nivel y turbidez del agua, y transmiten cada lectura a este panel en tiempo real.</p>
+    </div>
+    <div class="gauge-box">
+      <div class="weather-chip" id="climaChip">
+        <span class="weather-icon" id="climaIcono">—</span>
+        <div>
+          <div class="weather-temp"><span id="climaTemp">—</span>°C</div>
+          <div class="weather-desc" id="climaDesc">Cargando clima de Mazatlán…</div>
+        </div>
+      </div>
+      <svg id="gaugeSVG" width="220" height="220" viewBox="0 0 220 220">
+        <defs>
+          <clipPath id="circleClip"><circle cx="110" cy="110" r="92"/></clipPath>
+          <linearGradient id="aguaGrad" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#B9835A"/>
+            <stop offset="100%" stop-color="#6FC3D1"/>
+          </linearGradient>
+        </defs>
+        <circle cx="110" cy="110" r="92" fill="none" stroke="rgba(237,230,214,0.12)" stroke-width="2"/>
+        <g clip-path="url(#circleClip)">
+          <rect id="nivelAgua" x="18" y="110" width="184" height="184" fill="url(#aguaGrad)" opacity="0.85"/>
+          <path id="ola1" d="M18,110 Q 55,102 110,110 T 202,110 V 300 H18 Z" fill="url(#aguaGrad)" opacity="0.55"/>
+        </g>
+        <circle cx="110" cy="110" r="92" fill="none" stroke="rgba(237,230,214,0.35)" stroke-width="1.5"/>
+      </svg>
+      <div class="gauge-label">Claridad del agua</div>
+      <div class="gauge-reading"><span id="claridadValor">—</span></div>
+    </div>
+  </section>
+
+  <!-- ================= PROBLEMÁTICA ================= -->
+  <section class="section" id="problematica">
+    <span class="section-eyebrow">01 — La problemática</span>
+    <h2 class="section-title">¿Por qué monitorear el Jabalines?</h2>
+    <div class="split">
+      <div>
+        <!-- Borrador editable a partir de las notas de Noroeste, Ríodoce y Revista Espejo (ver sección Noticias) -->
+        <p class="body-text">
+          El arroyo Jabalines, en el tramo bajo el puente de la avenida Clouthier entre La Foresta,
+          Bugambilias y San Fernando, enfrenta acumulación constante de basura, maleza y aguas negras
+          que le dan una coloración verdosa y mal olor, generando riesgo de fauna nociva y enfermedades
+          como el dengue. A esto se suma que, en 2025, el Ayuntamiento modificó el trazo del cauce sin
+          aviso previo a los vecinos, lo que —según denuncias— aumentó el riesgo de inundación para
+          varias colonias cercanas. Más recientemente, se ha planteado podar el manglar del arroyo como
+          medida contra inundaciones, propuesta que ambientalistas cuestionan por el papel del manglar
+          como barrera natural. Ante la falta de datos objetivos y continuos sobre la condición del agua,
+          este proyecto busca dar seguimiento en tiempo real a su calidad.
+        </p>
+      </div>
+      <div class="photo-grid">
+        <figure class="photo-real"><img src="img/arroyo/basura-cauce.png" alt="Basura acumulada en el cauce del arroyo Jabalines"></figure>
+        <figure class="photo-real"><img src="img/arroyo/puente-escombros.png" alt="Escombros y basura acumulados junto al cauce del arroyo Jabalines, cerca de un puente peatonal"></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EL PROYECTO ================= -->
+  <section class="section" id="proyecto">
+    <span class="section-eyebrow">02 — El proyecto</span>
+    <h2 class="section-title">Sobre Atlán</h2>
+    <div class="cards-row">
+      <div class="info-card">
+        <h3>¿Qué hace?</h3>
+        <!-- PENDIENTE: ajusta esta descripción a tu gusto -->
+        <p>Un sistema IoT con ESP32 que mide temperatura, nivel de agua y turbidez del Arroyo Jabalines, y envía cada lectura a un servidor propio para su consulta en tiempo real.</p>
+      </div>
+      <div class="info-card">
+        <h3>¿Con quién?</h3>
+        <p>Proyecto desarrollado como parte de la carrera de Ingeniería en Tecnología de la Información en la Universidad Politécnica de Sinaloa.</p>
+      </div>
+      <div class="info-card">
+        <h3>¿Cómo funciona?</h3>
+        <p>Sensores DS18B20, HC-SR04 y un módulo de turbidez conectados a un ESP32, que transmite los datos por HTTP a un backend en Node.js + MySQL alojado en AWS.</p>
+      </div>
+    </div>
+
+    <h3 class="subsection-title">Componentes principales</h3>
+    <div class="componentes-grid">
+      <figure class="componente-card">
+        <img src="img/componentes/esp32.webp" alt="ESP32">
+        <figcaption>ESP32<span>Microcontrolador — WiFi + procesamiento</span></figcaption>
+      </figure>
+      <figure class="componente-card">
+        <img src="img/componentes/ds18b20.webp" alt="Sensor DS18B20">
+        <figcaption>DS18B20<span>Sensor de temperatura sumergible</span></figcaption>
+      </figure>
+      <figure class="componente-card">
+        <img src="img/componentes/turbidez.webp" alt="Módulo de turbidez">
+        <figcaption>Módulo de turbidez<span>Detecta claridad del agua</span></figcaption>
+      </figure>
+      <figure class="componente-card">
+        <img src="img/componentes/pcb.webp" alt="Placa PCB perforada">
+        <figcaption>Placa PCB 5×5cm<span>Circuito soldado permanente</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ================= GALERÍA ================= -->
+  <section class="section" id="galeria">
+    <span class="section-eyebrow">03 — Galería</span>
+    <h2 class="section-title">El dispositivo y el equipo trabajando</h2>
+    <div class="gallery-grid">
+      <!-- PENDIENTE: agrega tus fotos aquí (dispositivo armado, cableado, instalación, equipo trabajando) -->
+      <figure class="photo-real"><img src="img/galeria/prototipo-1.jpeg" alt="Prototipo del dispositivo Atlán, con el sensor de temperatura y la caja de control dentro de un contenedor de pruebas"></figure>
+      <figure class="photo-real"><img src="img/galeria/prototipo-2.jpeg" alt="Vista del cableado del prototipo Atlán durante pruebas de laboratorio"></figure>
+      <figure class="photo-real">
+        <img src="img/galeria/dispositivo-y-dashboard.jpeg" alt="Dispositivo Atlán ya sellado y encendido, junto al dashboard mostrando las lecturas en vivo en la pantalla">
+      </figure>
+      <figure class="photo-real">
+        <img src="img/galeria/sensor-en-agua.jpeg" alt="Sensor de turbidez y demás componentes del prototipo Atlán conectados dentro del contenedor de pruebas">
+      </figure>
+      <figure class="photo-real video-real">
+        <video controls muted preload="metadata">
+          <source src="img/galeria/prueba-agua-turbia.mp4" type="video/mp4">
+        </video>
+      </figure>
+      <figure class="photo-real video-real">
+        <video controls muted preload="metadata">
+          <source src="img/galeria/prueba-agua-normal.mp4" type="video/mp4">
+        </video>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ================= EQUIPO ================= -->
+  <section class="section" id="equipo">
+    <span class="section-eyebrow">04 — El equipo</span>
+    <h2 class="section-title">Quiénes hicimos Atlán</h2>
+    <div class="team-grid">
+      <!-- PENDIENTE: agrega la foto y el mensaje/testimonio de cada quien -->
+      <div class="team-card">
+        <img class="team-photo" src="img/equipo/sergio.png" alt="Sergio Isaac Moreno Alvarez">
+        <h4>Sergio Isaac Moreno Alvarez</h4>
+        <p class="team-quote">"Ver el arroyo por años y no tener forma de saber qué tan contaminado estaba, fue lo que nos empujó a construir algo que sí diera respuestas."</p>
+      </div>
+      <div class="team-card">
+        <img class="team-photo" src="img/equipo/juan-carlos.png" alt="Juan Carlos Ríos Díaz">
+        <h4>Juan Carlos Ríos Díaz</h4>
+        <p class="team-quote">"Calibrar el sensor de turbidez nos enseñó que los datos reales casi nunca son tan limpios como en el papel, pero por eso valen más."</p>
+      </div>
+      <div class="team-card">
+        <img class="team-photo" src="img/equipo/mario.png" alt="Mario León Barraza">
+        <h4>Mario León Barraza</h4>
+        <p class="team-quote">"Más allá de la calificación, Atlán es la primera vez que sentimos que un proyecto de la escuela puede servirle de verdad a la comunidad."</p>
+      </div>
+      <div class="team-card">
+        <img class="team-photo" src="img/equipo/alexis.png" alt="Alexis Sebastián Escalera Ibarra">
+        <h4>Alexis Sebastián Escalera Ibarra</h4>
+        <p class="team-quote">"Trabajar en Atlán nos obligó a dejar la teoría y resolver problemas reales de cableado, calibración y conectividad en campo."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NOTICIAS ================= -->
+  <section class="section" id="noticias">
+    <span class="section-eyebrow">05 — Noticias</span>
+    <h2 class="section-title">Enlaces relacionados</h2>
+    <ul class="news-list">
+      <li>
+        <a href="https://www.noroeste.com.mx/mazatlan/vecinos-denuncian-basura-y-maleza-en-el-arroyo-jabalines-pese-a-labores-de-limpieza-CN23956136" target="_blank" rel="noopener">Vecinos denuncian basura y maleza en el Arroyo Jabalines pese a labores de limpieza — Noroeste (ago 2026)</a>
+        <img class="news-photo" src="img/arroyo/vista-general.png" alt="Vista del arroyo Jabalines cubierto de vegetación acuática. Foto: Noroeste / Carlos Zataráin">
+        <span class="photo-credit">Foto: Noroeste / Carlos Zataráin</span>
+      </li>
+      <li><a href="https://revistaespejo.com/2026/07/29/de-nueva-cuenta-plantean-intervenir-manglar-del-arroyo-jabalines-en-mazatlan/" target="_blank" rel="noopener">De nueva cuenta, plantean intervenir manglar del arroyo Jabalines en Mazatlán — Revista Espejo (jul 2026)</a></li>
+      <li><a href="https://www.noroeste.com.mx/mazatlan/entre-basura-contaminacion-e-invasion-se-encuentra-actualmente-el-arroyo-jabalines-GB23662523" target="_blank" rel="noopener">Entre basura, contaminación e invasión, se encuentra actualmente el arroyo Jabalines — Noroeste</a></li>
+      <li><a href="https://riodoce.mx/2025/07/22/ayuntamiento-de-mazatlan-desvia-arroyo-jabalies/" target="_blank" rel="noopener">Ayuntamiento de Mazatlán desvía arroyo Jabalíes — Ríodoce (jul 2025)</a></li>
+      <li><a href="https://www.facebook.com/luznoticiasmx/videos/hasta-el-tope-luce-el-arroyo-jabal%C3%ADes-en-mazatl%C3%A1n-tras-las-intensas-lluvias/1073662345199672/" target="_blank" rel="noopener">Hasta el tope luce el arroyo Jabalines en Mazatlán tras las intensas lluvias — Luz Noticias (Facebook)</a></li>
+    </ul>
+  </section>
+
+  <!-- ================= DASHBOARD ================= -->
+  <section class="section" id="dashboard">
+    <div class="dashboard-head">
+      <div>
+        <span class="section-eyebrow">06 — En vivo</span>
+        <h2 class="section-title">Dashboard de sensores</h2>
+      </div>
+      <div class="status-pill">
+        <span class="dot" id="statusDot"></span>
+        <span id="statusText">conectando…</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Temperatura</div>
+        <div class="stat-value"><span id="tempValor">—</span><span class="unidad">°C</span></div>
+        <div class="stat-note">DS18B20</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Nivel del agua</div>
+        <div class="stat-value"><span id="nivelValor">—</span><span class="unidad">cm</span></div>
+        <div class="stat-note">HC-SR04</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Estado turbidez</div>
+        <div class="stat-value"><span id="turbiezEstado">—</span></div>
+        <div class="stat-note" id="turbiezNote">módulo óptico</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <span class="panel-title">Historial reciente</span>
+        <span class="panel-meta" id="ultimaActualizacion">última lectura: —</span>
+      </div>
+      <div class="chart-holder"><canvas id="historialChart"></canvas></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Proyecto Atlán — Universidad Politécnica de Sinaloa</span>
+
+  </footer>
+
+</div>
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>
