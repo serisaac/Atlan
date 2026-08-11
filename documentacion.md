@@ -32,7 +32,7 @@ reales de los sensores del dispositivo IoT (ESP32), ya validado end-to-end.
 ## 3. Infraestructura AWS
 
 - **Instancia EC2**: Debian, dedicada exclusivamente a este proyecto.
-- **IP elástica**: fija, asignada por AWS.
+- **IP elástica**: fija, asignada por AWS (no se publica aquí por seguridad).
 - **Dominio**: `atlanweb.duckdns.org` (DuckDNS).
 - **HTTPS**: certificado Let's Encrypt vía Certbot, auto-renovable (expira 2026-11-07).
 - **Base de datos**: MySQL/MariaDB, base `altlan`, usuario dedicado `altlanuser`.
@@ -170,11 +170,3 @@ turbidez variando con el sensor en agua real):
 - Foto en Noticias (`vista-general.png`): Noroeste / Carlos Zataráin, con crédito visible.
 - Resto de fotos y videos (arroyo, equipo, galería): material propio del equipo.
 - Texto de Problemática: redactado a partir de notas de Noroeste, Ríodoce y Revista Espejo.
-
-## 8. Pendientes generales
-
-- [ ] Confirmar/editar mensajes del equipo (los actuales son un borrador de Claude)
-- [ ] Decidir si se baja el intervalo de envío (3s) para el uso permanente en el arroyo
-- [ ] Revisar uso de horas de capa gratuita de AWS si hay otras instancias corriendo 24/7 al mismo tiempo
-- [ ] Probar el sitio en celular
-- [ ] Definir ubicación e instalación física final en el Arroyo Jabalines
