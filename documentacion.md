@@ -31,8 +31,8 @@ reales de los sensores del dispositivo IoT (ESP32), ya validado end-to-end.
 
 ## 3. Infraestructura AWS
 
-- **Instancia EC2**: Debian, separada de `appmovilremote`.
-- **IP elástica**: `54.156.10.32`
+- **Instancia EC2**: Debian, dedicada exclusivamente a este proyecto.
+- **IP elástica**: fija, asignada por AWS.
 - **Dominio**: `atlanweb.duckdns.org` (DuckDNS).
 - **HTTPS**: certificado Let's Encrypt vía Certbot, auto-renovable (expira 2026-11-07).
 - **Base de datos**: MySQL/MariaDB, base `altlan`, usuario dedicado `altlanuser`.
@@ -76,6 +76,42 @@ altlan-web/
 ├── .env                 → DB_USER, DB_PASSWORD, DB_NAME, PORT, API_KEY
 └── create_table.sql     → esquema de lecturas_sensores
 ```
+
+### 4.1 Estructura de la base de datos
+
+Una sola tabla, `lecturas_sensores`, dentro de la base `altlan`. Cada POST
+del ESP32 inserta una fila nueva — nunca se edita ni se borra, solo se
+acumula historial:
+
+| Columna | Tipo | Contenido |
+|---|---|---|
+| `id` | INT, autoincremental | Identificador único de la lectura |
+| `temperatura` | DECIMAL(5,2) | Temperatura en °C |
+| `nivel_agua` | DECIMAL(6,2) | Distancia medida por el HC-SR04, en cm |
+| `turbidez_valor` | INT | Valor crudo del sensor de turbidez (0–4095) |
+| `turbidez_estado` | TINYINT | 0 = clara, 1 = turbia (según `UMBRAL_TURBIDEZ_CLARA`) |
+| `fecha_hora` | DATETIME | Autogenerada al momento de insertar (`DEFAULT CURRENT_TIMESTAMP`) |
+
+Índice sobre `fecha_hora` para que `GET /historial?limit=N` sea rápido al
+ordenar por más reciente.
+
+### 4.2 Estructura de la API
+
+Patrón de separación de responsabilidades, sin framework adicional sobre
+Express:
+
+- **`app.js`** — punto de entrada único: configura middleware (CORS,
+  `express.json()`) y monta las rutas. No conoce detalles de la base de
+  datos ni de las consultas.
+- **`db.js`** — únicamente exporta un pool de conexión `mysql2/promise` a
+  MySQL. Si cambiara el motor de base de datos, solo este archivo se toca.
+- **`sensores.routes.js`** — define los 3 endpoints y su lógica: valida la
+  `x-api-key` en el POST, valida que vengan los 4 campos requeridos, y
+  arma las consultas SQL. No sabe cómo arrancó el servidor ni cómo se
+  configuró CORS.
+
+Beneficio práctico: cada archivo se puede modificar o depurar de forma
+aislada sin arriesgar romper las otras dos capas.
 
 ## 5. Secciones del sitio (`index.html`)
 
@@ -139,6 +175,6 @@ turbidez variando con el sensor en agua real):
 
 - [ ] Confirmar/editar mensajes del equipo (los actuales son un borrador de Claude)
 - [ ] Decidir si se baja el intervalo de envío (3s) para el uso permanente en el arroyo
-- [ ] Revisar uso de horas de capa gratuita de AWS si appMovil y altlan-api corren ambas 24/7
+- [ ] Revisar uso de horas de capa gratuita de AWS si hay otras instancias corriendo 24/7 al mismo tiempo
 - [ ] Probar el sitio en celular
 - [ ] Definir ubicación e instalación física final en el Arroyo Jabalines
